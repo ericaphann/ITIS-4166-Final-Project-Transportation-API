@@ -5,11 +5,61 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  password String
+  role Role @default(USER)
+  bus Bus?
+  train Train?
+  plane Plane?
+  @@map("users")
+}
+
+model Bus {
+  id Int @id @default(autoincrement())
+  type String
+  route_num Int
+  passengers Int
+  operator_id Int @unique
+  user User @relation(fields: [operator_id], references: [id])
+  @@map("buses")
+}
+
+model Train {
+  id Int @id @default(autoincrement())
+  type String
+  origin String
+  destination String
+  passengers Int
+  operator_id Int @unique
+  user User @relation(fields: [operator_id], references: [id])
+  @@map("trains")
+}
+
+model Plane {
+  id Int @id @default(autoincrement())
+  type String
+  origin String
+  destination String
+  passengers Int
+  operator_id Int @unique
+  user User @relation(fields: [operator_id], references: [id])
+  @@map("planes")
+}
+
+enum Role {
+  USER
+  CONDUCTOR
+  DRIVER
+  PILOT
 }
