@@ -26,6 +26,6 @@ export async function updateBusHandler(req, res) {
 
 export async function deleteBusHandler(req, res) {
     const busId = parseInt(req.params.id);
-    await deleteBus(busId);
-    res.status(204).send();
+    const deletedBus = await deleteBus(busId);
+    res.status(204).json(deletedBus);
 }

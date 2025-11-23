@@ -80,7 +80,13 @@ export async function updateTrain(id, updates) {
 }
 
 export async function removeTrain(id) {
-    return await prisma.train.delete({
-        where: { id }
-    });
+    try {
+        const deletedTrain = await prisma.train.delete({
+            where: { id }
+        });
+        return deletedTrain;
+    } catch (error) {
+        if (error.code === 'P2025') return null;
+        throw error;
+    }
 }

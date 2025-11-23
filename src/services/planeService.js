@@ -38,10 +38,11 @@ export async function updatePlaneById(id, data, operatorId) {
 }
 
 export async function deletePlane(id) {
-    try {
-        return await removePlane(id);
-    } catch (error) {
-        if (error.code === 'P2025') return null;
+    const result = await removePlane(id);
+    if (result) return result;
+    else {
+        const error = new Error(`Cannot find plane with id ${id}`);
+        error.status = 404;
         throw error;
     }
 }

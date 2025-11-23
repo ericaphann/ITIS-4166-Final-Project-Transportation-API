@@ -80,7 +80,13 @@ export async function updatePlane(id, updates) {
 }
 
 export async function removePlane(id) {
-    return await prisma.plane.delete({
-        where: { id }
-    });
+    try {
+        const deletedPlane = await prisma.plane.delete({
+            where: { id }
+        });
+        return deletedPlane;
+    } catch (error) {
+        if (error.code === 'P2025') return null;
+        throw error;
+    }
 }
