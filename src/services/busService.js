@@ -38,10 +38,11 @@ export async function updateBusById(id, data, operatorId) {
 }
 
 export async function deleteBus(id) {
-    try {
-        return await removeBus(id);
-    } catch (error) {
-        if (error.code === 'P2025') return null;
+    const result = await removeBus(id);
+    if (result) return result;
+    else {
+        const error = new Error(`Cannot find bus with id ${id}`);
+        error.status = 404;
         throw error;
     }
 }

@@ -38,10 +38,11 @@ export async function updateTrainById(id, data, operatorId) {
 }
 
 export async function deleteTrain(id) {
-    try {
-        return await removeTrain(id);
-    } catch (error) {
-        if (error.code === 'P2025') return null;
+    const result = await removeTrain(id);
+    if (result) return result;
+    else {
+        const error = new Error(`Cannot find train with id ${id}`);
+        error.status = 404;
         throw error;
     }
 }

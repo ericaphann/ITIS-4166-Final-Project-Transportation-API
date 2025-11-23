@@ -76,7 +76,13 @@ export async function updateBus(id, updates) {
 }
 
 export async function removeBus(id) {
-    return await prisma.bus.delete({
-        where: { id }
-    });
+    try {
+        const deletedBus = await prisma.bus.delete({
+            where: { id }
+        });
+        return deletedBus;
+    } catch (error) {
+        if (error.code === 'P2025') return null;
+        throw error;
+    }
 }

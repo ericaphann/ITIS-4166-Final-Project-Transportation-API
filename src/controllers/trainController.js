@@ -26,6 +26,6 @@ export async function updateTrainHandler(req, res) {
 
 export async function deleteTrainHandler(req, res) {
     const trainId = parseInt(req.params.id);
-    await deleteTrain(trainId);
-    res.status(204).send();
+    const deletedTrain = await deleteTrain(trainId);
+    res.status(204).json(deletedTrain);
 }

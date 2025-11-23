@@ -26,6 +26,6 @@ export async function updatePlaneHandler(req, res) {
 
 export async function deletePlaneHandler(req, res) {
     const planeId = parseInt(req.params.id);
-    await deletePlane(planeId);
-    res.status(204).send();
+    const deletedPlane = await deletePlane(planeId);
+    res.status(204).json(deletedPlane);
 }
