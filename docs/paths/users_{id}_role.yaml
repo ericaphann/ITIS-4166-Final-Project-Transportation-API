@@ -1,0 +1,32 @@
+patch:
+  summary: Update user role (admin required)
+  tags:
+    - Users
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            role:
+              type: string
+              enum: ["passenger", "driver", "admin"]
+              example: "driver"
+          required:
+            - role
+  security:
+    - adminAuth: []
+  responses:
+    '200':
+      description: Updated user role
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserResponse'

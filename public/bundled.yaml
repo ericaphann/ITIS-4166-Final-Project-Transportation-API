@@ -1,0 +1,620 @@
+openapi: 3.1.0
+info:
+  title: Transport & Users API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+  - url: https://itis-4166-final-project-transportation.onrender.com
+    description: Production server
+
+tags:
+  - name: Auth
+    description: Authentication endpoints
+  - name: Users
+    description: User-related endpoints
+  - name: Trains
+    description: Train-related endpoints
+  - name: Buses
+    description: Bus-related endpoints
+  - name: Planes
+    description: Plane-related endpoints
+
+paths:
+  # --- Auth ---
+  /auth/login:
+    post:
+      summary: Login a user
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "michael@gmail.com"
+                password:
+                  type: string
+                  example: "password"
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: "<accessToken>"
+
+  /auth/signup:
+    post:
+      summary: Register a new user
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string 
+                  example: tom@gmail.com
+                password:
+                  type: string
+                  example: "123"
+              required:
+                - email
+                - password
+      responses:
+        '201':
+          description: Signup successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "New user created with an id"
+
+  # --- Users ---
+  /users:
+    get:
+      summary: List all users
+      tags:
+        - Users
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+    post:
+      summary: Create a new user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+
+  /users/{id}:
+    get:
+      summary: Get a user by ID
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+    put:
+      summary: Update a user
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+    delete:
+      summary: Delete a user
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No content
+
+  /users/{id}/role:
+    patch:
+      summary: Update user role (admin required)
+      tags:
+        - Users
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  enum: ["conductor", "driver", pilot", "user"]
+                  example: "driver"
+              required:
+                - role
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: Updated user role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+
+  # --- Trains ---
+  /trains:
+    get:
+      summary: List all trains
+      tags:
+        - Trains
+      responses:
+        '200':
+          description: List of trains
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Train'
+    post:
+      summary: Create a new train
+      tags:
+        - Trains
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainRequest'
+      responses:
+        '201':
+          description: Train created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+
+  /trains/{id}:
+    get:
+      summary: Get a train by ID
+      tags:
+        - Trains
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Train details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+    put:
+      summary: Update a train
+      tags:
+        - Trains
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainRequest'
+      responses:
+        '200':
+          description: Updated train
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+    delete:
+      summary: Delete a train
+      tags:
+        - Trains
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No content
+
+  # --- Buses ---
+  /buses:
+    get:
+      summary: List all buses
+      tags:
+        - Buses
+      responses:
+        '200':
+          description: List of buses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bus'
+    post:
+      summary: Create a new bus
+      tags:
+        - Buses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusRequest'
+      responses:
+        '201':
+          description: Bus created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bus'
+
+  /buses/{id}:
+    get:
+      summary: Get a bus by ID
+      tags:
+        - Buses
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bus details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bus'
+    put:
+      summary: Update a bus
+      tags:
+        - Buses
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusRequest'
+      responses:
+        '200':
+          description: Updated bus
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bus'
+    delete:
+      summary: Delete a bus
+      tags:
+        - Buses
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No content
+
+  # --- Planes ---
+  /planes:
+    get:
+      summary: List all planes
+      tags:
+        - Planes
+      responses:
+        '200':
+          description: List of planes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plane'
+    post:
+      summary: Create a new plane
+      tags:
+        - Planes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaneRequest'
+      responses:
+        '201':
+          description: Plane created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plane'
+
+  /planes/{id}:
+    get:
+      summary: Get an plane by ID
+      tags:
+        - Planes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Plane details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plane'
+    put:
+      summary: Update an plane
+      tags:
+        - Planes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaneRequest'
+      responses:
+        '200':
+          description: Updated plane
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plane'
+    delete:
+      summary: Delete an plane
+      tags:
+        - Planes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No content
+
+components:
+  schemas:
+    # --- Users ---
+    UserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "michael@gmail.com"
+        password:
+          type: string
+          example: "password123"
+          description: "Plain-text password, will be hashed before storing"
+        role:
+          type: string
+          enum: ["conductor", "driver", pilot", "user"]
+          example: "driver"
+        mode:
+          type: string
+          enum: ["train", "bus", "plane"]
+          example: "bus"
+      required:
+        - email
+        - password
+        - role
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: "michael@gmail.com"
+        role:
+          type: string
+          enum: ["conductor", "driver", pilot", user]
+          example: "conductor"
+        mode:
+          type: string
+          enum: ["train", "bus", "plane"]
+          example: "train"
+      required:
+        - id
+        - email
+        - role
+        - mode
+
+    # --- Trains ---
+    Train:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        destination:
+          type: string
+        origin:
+          type: string
+        passengers:
+          type: integer
+        operator:
+          type: string
+
+    TrainRequest:
+      type: object
+      properties:
+        type:
+          type: string
+        destination:
+          type: string
+        origin:
+          type: string
+        passengers:
+          type: integer
+        operator:
+          type: string
+
+    # --- Buses ---
+    Bus:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        routeNum:
+          type: integer
+        passengers:
+          type: integer
+        operator:
+          type: string
+
+    BusRequest:
+      type: object
+      properties:
+        type:
+          type: string
+        routeNum:
+          type: integer
+        passengers:
+          type: integer
+        operator:
+          type: string
+
+    # --- Planes ---
+    Plane:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        destination:
+          type: string
+        origin:
+          type: string
+        passengers:
+          type: integer
+        operator:
+          type: string
+
+    PlaneRequest:
+      type: object
+      properties:
+        type:
+          type: string
+        destination:
+          type: string
+        origin:
+          type: string
+        passengers:
+          type: integer
+        operator:
+          type: string
+
+  securitySchemes:
+    adminAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

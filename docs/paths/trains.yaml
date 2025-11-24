@@ -1,0 +1,30 @@
+get:
+  summary: List all trains
+  tags:
+    - Trains
+  responses:
+    200:
+      description: List of trains
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas/Train.yaml'
+post:
+  summary: Create a new train
+  tags:
+    - Trains
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/TrainRequest.yaml'
+  responses:
+    201:
+      description: Train created
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/Train.yaml'

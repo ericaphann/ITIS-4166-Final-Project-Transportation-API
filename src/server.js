@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express'
+import YAML from 'yamljs'
 
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
@@ -14,6 +16,14 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(morgan('tiny'));
 app.use(express.json());
+
+const specs = YAML.load('./public/bundled.yaml');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/buses', busRoutes);

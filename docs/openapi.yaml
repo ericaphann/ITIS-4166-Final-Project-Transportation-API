@@ -1,0 +1,43 @@
+openapi: 3.1.0
+info:
+  title: Transportation API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development servers
+  - url: https://itis-4166-final-project-transportation.onrender.com
+    description: Production server on render
+tags:
+  - name: Users
+    description: User-related endpoints
+  - name: Auth
+    description: Authentication-related endpoints
+  - name: Trains
+    description: Train-related endpoints
+  - name: Buses
+    description: Bus-related endpoints
+  - name: Planes
+    description: Plane-related endpoints 
+paths: 
+  /users:
+    $ref: paths/users.yaml
+  /users/{id}:
+    $ref: paths/users_{id}.yaml
+  /auth/login:
+    $ref: paths/login.yaml
+  /auth/signup:
+    $ref: paths/signup.yaml
+  /trains:
+    $ref: paths/trains.yaml
+  /trains/{id}: 
+    $ref: paths/trains_{id}.yaml
+  /buses:
+    $ref: paths/buses.yaml
+  /buses/{id}: 
+    $ref: paths/buses_{id}.yaml 
+  /planes:
+    $ref: paths/planes.yaml
+  /planes/{id}: 
+    $ref: paths/planes_{id}.yaml 
+
+  

@@ -1,0 +1,17 @@
+type: object
+properties:
+  type:
+    type: string
+    example: "domestic"
+  destination:
+    type: string
+    example: "Seattle"
+  origin:
+    type: string
+    example: "Denver"
+  passengers:
+    type: integer
+    example: 300
+  operator:
+    type: string
+    example: "michael@gmail.com"

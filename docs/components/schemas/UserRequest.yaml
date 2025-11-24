@@ -1,0 +1,24 @@
+type: object
+properties:
+  id:
+    readOnly: true
+    type: integer
+    example: 1
+  email: 
+    type: string
+    example: michael@gmail.com
+  password:
+    type: string
+    example: password123
+  role:
+    type: string
+    enum: ["passenger", "driver", "admin"]
+    example: passenger
+  mode:
+    type: string
+    enum: ["train", "bus", "car", "bike", "plane"]
+    example: train 
+  required:
+    - email
+    - password 
+    - role 

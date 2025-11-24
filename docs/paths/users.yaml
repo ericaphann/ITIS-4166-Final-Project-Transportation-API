@@ -1,0 +1,30 @@
+get:
+  summary: List all users 
+  tags: 
+    - Users 
+  responses:
+        200:
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '../components/schemas/UserResponse.yaml'
+
+post:
+  summary: Create a new user
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/UserRequest.yaml'
+    responses:
+      201:
+        description: User created
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/UserResponse.yaml'
+
