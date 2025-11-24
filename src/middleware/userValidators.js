@@ -15,7 +15,7 @@ export const validateUser = [
         .withMessage('Password is required')
         .bail()
         .isLength({ min: 5, max: 64 })
-        .withMessage('Passworrd must be at least 8 characters and at most 64 characters'),
+        .withMessage('Passworrd must be at least 5 characters and at most 64 characters'),
     
     handleValidationErrors
 ];
@@ -45,7 +45,7 @@ export const validateUpdateUser = [
         .withMessage('Password must be a string')
         .bail()
         .isLength({ min: 5, max: 64 })
-        .withMessage('Password must be at least 8 characters and at most 64 characters'),
+        .withMessage('Password must be at least 5 characters and at most 64 characters'),
 
     handleValidationErrors
 

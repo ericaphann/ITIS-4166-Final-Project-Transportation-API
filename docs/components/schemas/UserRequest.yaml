@@ -12,12 +12,8 @@ properties:
     example: password123
   role:
     type: string
-    enum: ["passenger", "driver", "admin"]
-    example: passenger
-  mode:
-    type: string
-    enum: ["train", "bus", "car", "bike", "plane"]
-    example: train 
+    enum: ["USER", "DRIVER", "PILOT", "CONDUCTOR"]
+    example: USER
   required:
     - email
     - password 

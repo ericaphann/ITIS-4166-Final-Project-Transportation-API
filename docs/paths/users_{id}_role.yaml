@@ -1,7 +1,9 @@
 patch:
-  summary: Update user role (admin required)
+  summary: Update a user's role
   tags:
     - Users
+  security:
+    - userAuth: []
   parameters:
     - in: path
       name: id
@@ -17,16 +19,34 @@ patch:
           properties:
             role:
               type: string
-              enum: ["passenger", "driver", "admin"]
-              example: "driver"
+              enum: ["USER", "DRIVER", "PILOT", "CONDUCTOR"]
+              example: "DRIVER"
           required:
             - role
-  security:
-    - adminAuth: []
   responses:
     '200':
       description: Updated user role
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/UserResponse'
+            $ref: '../components/schemas/UserResponse.yaml'
+    '401':
+      description: You are not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not authenticated"
+    '403':
+      description: 'Forbidden: Insufficient Permission'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden: Insufficient Permission"

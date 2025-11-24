@@ -29,3 +29,13 @@ post:
               accessToken:
                 type: string
                 example: "<accessToken>"
+    '401':
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Invalid credentials"

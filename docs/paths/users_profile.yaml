@@ -1,19 +1,17 @@
 get:
-  summary: List all trains
+  summary: Get current user's profile
   tags:
-    - Trains
+    - Users
   security:
     - userAuth: []
   responses:
     200:
-      description: List of trains
+      description: current user's profile
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '../components/schemas/Train.yaml'
-    '401':
+            $ref: '../components/schemas/UserResponse.yaml'
+    401:
       description: You are not authenticated
       content:
         application/json:
@@ -23,20 +21,11 @@ get:
               message:
                 type: string
                 example: "You are not authenticated"
-    403:
-      description: 'Forbidden: Insufficient Permission'
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: "Forbidden: Insufficient Permission"
-post:
-  summary: Create a new train
+
+put:
+  summary: Update current user's profile
   tags:
-    - Trains
+    - Users
   security:
     - userAuth: []
   requestBody:
@@ -44,15 +33,15 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../components/schemas/TrainRequest.yaml'
+          $ref: '../components/schemas/UserRequest.yaml'
   responses:
-    201:
-      description: Train created
+    200:
+      description: Updated user's profile
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/Train.yaml'
-    '401':
+            $ref: '../components/schemas/UserResponse.yaml'
+    401:
       description: You are not authenticated
       content:
         application/json:
@@ -62,8 +51,18 @@ post:
               message:
                 type: string
                 example: "You are not authenticated"
-    403:
-      description: 'Forbidden: Insufficient Permission'
+
+delete:
+  summary: Delete current user
+  tags:
+    - Users
+  security:
+    - userAuth: []
+  responses:
+    204:
+      description: No content
+    401:
+      description: You are not authenticated
       content:
         application/json:
           schema:
@@ -71,4 +70,4 @@ post:
             properties:
               message:
                 type: string
-                example: "Forbidden: Insufficient Permission"
+                example: "You are not authenticated"

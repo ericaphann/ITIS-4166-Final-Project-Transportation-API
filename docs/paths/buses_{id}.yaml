@@ -1,0 +1,149 @@
+get:
+  summary: Get a bus by ID
+  tags:
+    - Buses
+  security:
+    - userAuth: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Bus details
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/Bus.yaml'
+    '401':
+      description: You are not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not authenticated"
+    '403':
+      description: 'Forbidden: Insufficient Permission'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden: Insufficient Permission"
+    '404':
+      description: Cannot find bus with id {id}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Cannot find bus with id {id}"
+put:
+  summary: Update a bus
+  tags:
+    - Buses
+  security:
+    - userAuth: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/BusRequest.yaml'
+  responses:
+    '200':
+      description: Updated bus
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/Bus.yaml'
+    '401':
+      description: You are not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not authenticated"
+    '403':
+      description: 'Forbidden: Insufficient Permission'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden: Insufficient Permission"
+    '404':
+      description: Cannot find bus with id {id}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Cannot find bus with id {id}"
+delete:
+  summary: Delete a bus
+  tags:
+    - Buses
+  security:
+    - userAuth: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '204':
+      description: No content
+    '401':
+      description: You are not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not authenticated"
+    '403':
+      description: 'Forbidden: Insufficient Permission'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden: Insufficient Permission"
+    '404':
+      description: Cannot find bus with id {id}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Cannot find bus with id {id}"

@@ -6,8 +6,8 @@ import { validateBus, validateUpdateBus } from '../middleware/busValidators.js';
 
 const router = express.Router();
 
-router.get('/', getAllBusesHandler);
-router.get('/:id', getBusByIdHandler);
+router.get('/', authenticate, getAllBusesHandler);
+router.get('/:id', authenticate, getBusByIdHandler);
 
 // requires DRIVER authentication!
 router.post('/', authenticate, authorizeRoles('DRIVER'), validateBus, createBusHandler);

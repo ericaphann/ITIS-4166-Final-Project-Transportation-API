@@ -13,7 +13,7 @@ export async function findAllTrains() {
         origin: train.origin,
         destination: train.destination,
         passengers: train.passengers,
-        opperator: train.user.email.split('@')[0]
+        opperator: train.user.email
     }));
 }
 
@@ -33,8 +33,8 @@ export async function findTrainById(id) {
         origin: train.origin,
         destination: train.destination,
         passengers: train.passengers,
-        opperator: train.user.email.split('@')[0]
-    };
+        opperator: train.user.email
+}
 }
 
 export async function createTrain(data) {
@@ -51,7 +51,7 @@ export async function createTrain(data) {
         origin: train.origin,
         destination: train.destination,
         passengers: train.passengers,
-        opperator: train.user.email.split('@')[0]
+        opperator: train.user.email
     };
 }
 
@@ -71,7 +71,7 @@ export async function updateTrain(id, updates) {
             origin: train.origin,
             destination: train.destination,
             passengers: train.passengers,
-            opperator: train.user.email.split('@')[0]
+            opperator: train.user.email
         };
     } catch (error) {
         if (error.code === 'P2025') return null;

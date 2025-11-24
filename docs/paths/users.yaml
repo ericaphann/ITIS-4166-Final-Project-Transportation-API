@@ -1,7 +1,9 @@
 get:
-  summary: List all users 
+  summary: List all users
   tags: 
-    - Users 
+    - Users
+  security:
+    - userAuth: []
   responses:
         200:
           description: List of users
@@ -11,20 +13,13 @@ get:
                 type: array
                 items:
                   $ref: '../components/schemas/UserResponse.yaml'
-
-post:
-  summary: Create a new user
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema:
-          $ref: '../components/schemas/UserRequest.yaml'
-    responses:
-      201:
-        description: User created
-        content:
-          application/json:
-            schema:
-              $ref: '../components/schemas/UserResponse.yaml'
-
+        401:
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "You are not authenticated"

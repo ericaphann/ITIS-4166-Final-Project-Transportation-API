@@ -6,8 +6,8 @@ import { validateTrain, validateUpdateTrain } from '../middleware/trainValidator
 
 const router = express.Router();
 
-router.get('/', getAllTrainsHandler);
-router.get('/:id', getTrainByIdHandler);
+router.get('/', authenticate, getAllTrainsHandler);
+router.get('/:id', authenticate, getTrainByIdHandler);
 
 // requires CONDUCTOR authentication!
 router.post('/', authenticate, authorizeRoles('CONDUCTOR'), validateTrain, createTrainHandler);

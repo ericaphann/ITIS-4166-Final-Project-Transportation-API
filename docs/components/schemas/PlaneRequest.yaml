@@ -2,7 +2,7 @@ type: object
 properties:
   type:
     type: string
-    example: "domestic"
+    example: "Domestic"
   destination:
     type: string
     example: "Seattle"

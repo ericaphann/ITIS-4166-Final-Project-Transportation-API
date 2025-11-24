@@ -2,4 +2,4 @@ type: object
 properties:
   message:
     type: string
-    example: "New user created with an id of 3"
+    example: "New user created with an id of {id}"

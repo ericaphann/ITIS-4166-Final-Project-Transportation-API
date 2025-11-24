@@ -1,18 +1,18 @@
 get:
-  summary: List all trains
+  summary: List all buses
   tags:
-    - Trains
+    - Buses
   security:
     - userAuth: []
   responses:
     200:
-      description: List of trains
+      description: List of buses
       content:
         application/json:
           schema:
             type: array
             items:
-              $ref: '../components/schemas/Train.yaml'
+              $ref: '../components/schemas/Bus.yaml'
     '401':
       description: You are not authenticated
       content:
@@ -23,7 +23,7 @@ get:
               message:
                 type: string
                 example: "You are not authenticated"
-    403:
+    '403':
       description: 'Forbidden: Insufficient Permission'
       content:
         application/json:
@@ -34,9 +34,9 @@ get:
                 type: string
                 example: "Forbidden: Insufficient Permission"
 post:
-  summary: Create a new train
+  summary: Create a new bus
   tags:
-    - Trains
+    - Buses
   security:
     - userAuth: []
   requestBody:
@@ -44,14 +44,14 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../components/schemas/TrainRequest.yaml'
+          $ref: '../components/schemas/BusRequest.yaml'
   responses:
     201:
-      description: Train created
+      description: Bus created
       content:
         application/json:
           schema:
-            $ref: '../components/schemas/Train.yaml'
+            $ref: '../components/schemas/Bus.yaml'
     '401':
       description: You are not authenticated
       content:
@@ -62,7 +62,7 @@ post:
               message:
                 type: string
                 example: "You are not authenticated"
-    403:
+    '403':
       description: 'Forbidden: Insufficient Permission'
       content:
         application/json:
@@ -72,3 +72,13 @@ post:
               message:
                 type: string
                 example: "Forbidden: Insufficient Permission"
+    '404':
+      description: Cannot find bus with id {id}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Cannot find bus with id {id}"

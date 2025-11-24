@@ -14,7 +14,7 @@ post:
               example: "michael@gmail.com"
             password:
               type: string
-              example: "123"
+              example: "12345"
           required:
             - email
             - password
@@ -28,4 +28,14 @@ post:
             properties:
               message:
                 type: string
-                example: "New user created with an id of 3"
+                example: "New user created with an id of {id}"
+    '409':
+      description: Email already been used
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Email already been used"

@@ -5,7 +5,7 @@ properties:
     example: "tom@gmail.com"
   password:
     type: string
-    example: "123"
+    example: "12345"
 required:
   - email
   - password

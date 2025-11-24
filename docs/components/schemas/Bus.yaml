@@ -5,7 +5,7 @@ properties:
     example: 1
   type:
     type: string
-    example: "local"
+    example: "Local"
   routeNum:
     type: integer
     example: 7

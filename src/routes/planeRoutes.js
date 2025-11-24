@@ -6,8 +6,8 @@ import { validatePlane, validateUpdatePlane } from '../middleware/planeValidator
 
 const router = express.Router();
 
-router.get('/', getAllPlanesHandler);
-router.get('/:id', getPlaneByIdHandler);
+router.get('/', authenticate, getAllPlanesHandler);
+router.get('/:id', authenticate, getPlaneByIdHandler);
 
 // requires PILOT authentication!
 router.post('/', authenticate, authorizeRoles('PILOT'), validatePlane, createPlaneHandler);

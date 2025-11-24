@@ -9,14 +9,9 @@ properties:
     example: michael@gmail.com
   role:
     type: string
-    enum: ["passenger", "driver", "admin"]
-    example: passenger
-  mode:
-    type: string
-    enum: ["train", "bus", "car", "bike", "plane"]
-    example: train 
+    enum: ["USER", "DRIVER", "PILOT", "CONDUCTOR"]
+    example: USER
   required:
     - id
     - email
-    - role 
-    - mode
+    - role
