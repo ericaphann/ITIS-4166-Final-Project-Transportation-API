@@ -4,6 +4,9 @@ import morgan from 'morgan';
 
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import busRoutes from './routes/busRoutes.js';
+import trainRoutes from './routes/trainRoutes.js';
+import planeRoutes from './routes/planeRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,6 +16,10 @@ app.use(morgan('tiny'));
 app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
+app.use('/buses', busRoutes);
+app.use('/trains', trainRoutes);
+app.use('/planes', planeRoutes);
+
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
