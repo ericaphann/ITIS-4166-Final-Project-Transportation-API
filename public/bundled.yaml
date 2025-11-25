@@ -1,0 +1,1120 @@
+openapi: 3.1.0
+info:
+  title: Transportation API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development servers
+  - url: https://itis-4166-final-project-transportation.onrender.com
+    description: Production server on render
+tags:
+  - name: Auth
+    description: Authentication-related endpoints
+  - name: Users
+    description: User-related endpoints
+  - name: Trains
+    description: Train-related endpoints
+  - name: Buses
+    description: Bus-related endpoints
+  - name: Planes
+    description: Plane-related endpoints
+paths:
+  /users:
+    get:
+      summary: List all users
+      tags:
+        - Users
+      security:
+        - userAuth: []
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+  /users/profile:
+    get:
+      summary: Get current user's profile
+      tags:
+        - Users
+      security:
+        - userAuth: []
+      responses:
+        '200':
+          description: current user's profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+    put:
+      summary: Update current user's profile
+      tags:
+        - Users
+      security:
+        - userAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: Updated user's profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+    delete:
+      summary: Delete current user
+      tags:
+        - Users
+      security:
+        - userAuth: []
+      responses:
+        '204':
+          description: No content
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+  /users/{id}/role:
+    patch:
+      summary: Update a user's role
+      tags:
+        - Users
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  enum:
+                    - USER
+                    - DRIVER
+                    - PILOT
+                    - CONDUCTOR
+                  example: DRIVER
+              required:
+                - role
+      responses:
+        '200':
+          description: Updated user role
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+  /auth/login:
+    post:
+      summary: Login a user
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: michael@gmail.com
+                password:
+                  type: string
+                  example: password
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: <accessToken>
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid credentials
+  /auth/signup:
+    post:
+      summary: Register a new user
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: michael@gmail.com
+                password:
+                  type: string
+                  example: '12345'
+              required:
+                - email
+                - password
+      responses:
+        '201':
+          description: Signup successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: New user created with an id of {id}
+        '409':
+          description: Email already been used
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email already been used
+  /trains:
+    get:
+      summary: List all trains
+      tags:
+        - Trains
+      security:
+        - userAuth: []
+      responses:
+        '200':
+          description: List of trains
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Train'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+    post:
+      summary: Create a new train
+      tags:
+        - Trains
+      security:
+        - userAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainRequest'
+      responses:
+        '201':
+          description: Train created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+  /trains/{id}:
+    get:
+      summary: Get a train by ID
+      tags:
+        - Trains
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Train details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+        '401':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+        '404':
+          description: Cannot find train with id {id}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cannot find train with id {id}
+    put:
+      summary: Update a train
+      tags:
+        - Trains
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainRequest'
+      responses:
+        '200':
+          description: Updated train
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Train'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+        '404':
+          description: Cannot find train with id {id}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cannot find train with id {id}
+    delete:
+      summary: Delete a train
+      tags:
+        - Trains
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No content
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+        '404':
+          description: Cannot find train with id {id}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cannot find train with id {id}
+  /buses:
+    get:
+      summary: List all buses
+      tags:
+        - Buses
+      security:
+        - userAuth: []
+      responses:
+        '200':
+          description: List of buses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bus'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+    post:
+      summary: Create a new bus
+      tags:
+        - Buses
+      security:
+        - userAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusRequest'
+      responses:
+        '201':
+          description: Bus created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bus'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+        '404':
+          description: Cannot find bus with id {id}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cannot find bus with id {id}
+  /buses/{id}:
+    get:
+      summary: Get a bus by ID
+      tags:
+        - Buses
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Bus details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bus'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+        '404':
+          description: Cannot find bus with id {id}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cannot find bus with id {id}
+    put:
+      summary: Update a bus
+      tags:
+        - Buses
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusRequest'
+      responses:
+        '200':
+          description: Updated bus
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bus'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+        '404':
+          description: Cannot find bus with id {id}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cannot find bus with id {id}
+    delete:
+      summary: Delete a bus
+      tags:
+        - Buses
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No content
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+        '404':
+          description: Cannot find bus with id {id}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cannot find bus with id {id}
+  /planes:
+    get:
+      summary: List all planes
+      tags:
+        - Planes
+      security:
+        - userAuth: []
+      responses:
+        '200':
+          description: List of planes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plane'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+    post:
+      summary: Create a new plane
+      tags:
+        - Planes
+      security:
+        - userAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaneRequest'
+      responses:
+        '201':
+          description: Planne created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plane'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+        '404':
+          description: Cannot find plane with id {id}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cannot find plane with id {id}
+  /planes/{id}:
+    get:
+      summary: Get an plane by ID
+      tags:
+        - Planes
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Plane details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plane'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+        '404':
+          description: Cannot find plane with id {id}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cannot find plane with id {id}
+    put:
+      summary: Update an plane
+      tags:
+        - Planes
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaneRequest'
+      responses:
+        '200':
+          description: Updated plane
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plane'
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+        '404':
+          description: Cannot find plane with id {id}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cannot find plane with id {id}
+    delete:
+      summary: Delete an plane
+      tags:
+        - Planes
+      security:
+        - userAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No content
+        '401':
+          description: You are not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: You are not authenticated
+        '403':
+          description: 'Forbidden: Insufficient Permission'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 'Forbidden: Insufficient Permission'
+        '404':
+          description: Cannot find plane with id {id}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Cannot find plane with id {id}
+components:
+  securitySchemes:
+    userAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        id:
+          readOnly: true
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: michael@gmail.com
+        role:
+          type: string
+          enum:
+            - USER
+            - DRIVER
+            - PILOT
+            - CONDUCTOR
+          example: USER
+        required:
+          - id
+          - email
+          - role
+    UserRequest:
+      type: object
+      properties:
+        id:
+          readOnly: true
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: michael@gmail.com
+        password:
+          type: string
+          example: password123
+        role:
+          type: string
+          enum:
+            - USER
+            - DRIVER
+            - PILOT
+            - CONDUCTOR
+          example: USER
+        required:
+          - email
+          - password
+          - role
+    Train:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        type:
+          type: string
+          example: Commuter
+        destination:
+          type: string
+          example: Charlotte
+        origin:
+          type: string
+          example: Raleigh
+        passengers:
+          type: integer
+          example: 250
+        operator:
+          type: string
+          example: michael@gmail.com
+    TrainRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          example: Passenger
+        destination:
+          type: string
+          example: Washington, D.C.
+        origin:
+          type: string
+          example: New York
+        passengers:
+          type: integer
+          example: 250
+        operator:
+          type: string
+          example: michael@gmail.com
+    Bus:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        type:
+          type: string
+          example: Local
+        routeNum:
+          type: integer
+          example: 7
+        passengers:
+          type: integer
+          example: 100
+        operator:
+          type: string
+          example: michael@gmail.com
+    BusRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          example: Coach
+        routeNum:
+          type: integer
+          example: 27
+        passengers:
+          type: integer
+          example: 250
+        operator:
+          type: string
+          example: michael@gmail.com
+    Plane:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        type:
+          type: string
+          example: Domestic
+        destination:
+          type: string
+          example: Miami
+        origin:
+          type: string
+          example: Boston
+        passengers:
+          type: integer
+          example: 250
+        operator:
+          type: string
+          example: michael@gmail.com
+    PlaneRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          example: Domestic
+        destination:
+          type: string
+          example: Seattle
+        origin:
+          type: string
+          example: Denver
+        passengers:
+          type: integer
+          example: 300
+        operator:
+          type: string
+          example: michael@gmail.com

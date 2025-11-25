@@ -1,0 +1,17 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+  type:
+    type: string
+    example: "Local"
+  routeNum:
+    type: integer
+    example: 7
+  passengers:
+    type: integer
+    example: 100
+  operator:
+    type: string
+    example: "michael@gmail.com"

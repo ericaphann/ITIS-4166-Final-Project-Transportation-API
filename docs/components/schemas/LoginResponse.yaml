@@ -1,0 +1,5 @@
+type: object
+properties:
+  accessToken:
+    type: string
+    example: "<JWT_access_token>"

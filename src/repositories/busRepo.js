@@ -12,7 +12,7 @@ export async function findAllBuses() {
         type: bus.type,
         route_num: bus.route_num,
         passengers: bus.passengers,
-        opperator: bus.user.email.split('@')[0]
+        opperator: bus.user.email
     }));
 }
 
@@ -31,7 +31,7 @@ export async function findBusById(id) {
         type: bus.type,
         route_num: bus.route_num,
         passengers: bus.passengers,
-        opperator: bus.user.email.split('@')[0]
+        opperator: bus.user.email
     };
 }
 
@@ -48,7 +48,7 @@ export async function createBus(data) {
         type: bus.type,
         route_num: bus.route_num,
         passengers: bus.passengers,
-        opperator: bus.user.email.split('@')[0]
+        opperator: bus.user.email
     };
 }
 
@@ -67,7 +67,7 @@ export async function updateBus(id, updates) {
             type: bus.type,
             route_num: bus.route_num,
             passengers: bus.passengers,
-            opperator: bus.user.email.split('@')[0]
+            opperator: bus.user.email
         };
     } catch (error) {
         if (error.code === 'P2025') return null;

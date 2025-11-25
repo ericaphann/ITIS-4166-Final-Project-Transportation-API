@@ -1,0 +1,14 @@
+type: object
+properties:
+  type:
+    type: string
+    example: "Coach"
+  routeNum:
+    type: integer
+    example: 27
+  passengers:
+    type: integer
+    example: 250
+  operator:
+    type: string
+    example: "michael@gmail.com"

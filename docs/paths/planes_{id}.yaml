@@ -1,0 +1,149 @@
+get:
+  summary: Get an plane by ID
+  tags:
+    - Planes
+  security:
+    - userAuth: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Plane details
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/Plane.yaml'
+    '401':
+      description: You are not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not authenticated"
+    '403':
+      description: 'Forbidden: Insufficient Permission'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden: Insufficient Permission"
+    '404':
+      description: Cannot find plane with id {id}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Cannot find plane with id {id}"
+put:
+  summary: Update an plane
+  tags:
+    - Planes
+  security:
+    - userAuth: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/PlaneRequest.yaml'
+  responses:
+    '200':
+      description: Updated plane
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/Plane.yaml'
+    '401':
+      description: You are not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not authenticated"
+    '403':
+      description: 'Forbidden: Insufficient Permission'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden: Insufficient Permission"
+    '404':
+      description: Cannot find plane with id {id}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Cannot find plane with id {id}"
+delete:
+  summary: Delete an plane
+  tags:
+    - Planes
+  security:
+    - userAuth: []
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+  responses:
+    '204':
+      description: No content
+    '401':
+      description: You are not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not authenticated"
+    '403':
+      description: 'Forbidden: Insufficient Permission'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden: Insufficient Permission"
+    '404':
+      description: Cannot find plane with id {id}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Cannot find plane with id {id}"

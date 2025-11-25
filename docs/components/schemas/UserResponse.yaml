@@ -1,0 +1,17 @@
+type: object
+properties:
+  id:
+    readOnly: true
+    type: integer
+    example: 1
+  email: 
+    type: string
+    example: michael@gmail.com
+  role:
+    type: string
+    enum: ["USER", "DRIVER", "PILOT", "CONDUCTOR"]
+    example: USER
+  required:
+    - id
+    - email
+    - role

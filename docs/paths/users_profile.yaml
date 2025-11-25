@@ -1,0 +1,73 @@
+get:
+  summary: Get current user's profile
+  tags:
+    - Users
+  security:
+    - userAuth: []
+  responses:
+    200:
+      description: current user's profile
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/UserResponse.yaml'
+    401:
+      description: You are not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not authenticated"
+
+put:
+  summary: Update current user's profile
+  tags:
+    - Users
+  security:
+    - userAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/UserRequest.yaml'
+  responses:
+    200:
+      description: Updated user's profile
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/UserResponse.yaml'
+    401:
+      description: You are not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not authenticated"
+
+delete:
+  summary: Delete current user
+  tags:
+    - Users
+  security:
+    - userAuth: []
+  responses:
+    204:
+      description: No content
+    401:
+      description: You are not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not authenticated"

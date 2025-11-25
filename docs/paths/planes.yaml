@@ -1,0 +1,84 @@
+get:
+  summary: List all planes
+  tags:
+    - Planes
+  security:
+    - userAuth: []
+  responses:
+    200:
+      description: List of planes
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas/Plane.yaml'
+    '401':
+      description: You are not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not authenticated"
+    '403':
+      description: 'Forbidden: Insufficient Permission'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden: Insufficient Permission"
+post:
+  summary: Create a new plane
+  tags:
+    - Planes
+  security:
+    - userAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/PlaneRequest.yaml'
+  responses:
+    201:
+      description: Planne created
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/Plane.yaml'
+    '401':
+      description: You are not authenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "You are not authenticated"
+    '403':
+      description: 'Forbidden: Insufficient Permission'
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden: Insufficient Permission"
+    '404':
+      description: Cannot find plane with id {id}
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Cannot find plane with id {id}"

@@ -13,7 +13,7 @@ export async function findAllPlanes() {
         origin: plane.origin,
         destination: plane.destination,
         passengers: plane.passengers,
-        opperator: plane.user.email.split('@')[0]
+        opperator: plane.user.email
     }));
 }
 
@@ -33,7 +33,7 @@ export async function findPlaneById(id) {
         origin: plane.origin,
         destination: plane.destination,
         passengers: plane.passengers,
-        opperator: plane.user.email.split('@')[0]
+        opperator: plane.user.email
     };
 }
 
@@ -51,7 +51,7 @@ export async function createPlane(data) {
         origin: plane.origin,
         destination: plane.destination,
         passengers: plane.passengers,
-        opperator: plane.user.email.split('@')[0]
+        opperator: plane.user.email
     };
 }
 
@@ -71,7 +71,7 @@ export async function updatePlane(id, updates) {
             origin: plane.origin,
             destination: plane.destination,
             passengers: plane.passengers,
-            opperator: plane.user.email.split('@')[0]
+            opperator: plane.user.email
         };
     } catch (error) {
         if (error.code === 'P2025') return null;
